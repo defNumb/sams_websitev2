@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_websitev2/animated_widgets/delayed_animation.dart';
 import 'package:sams_websitev2/ui_elements/side_bar.dart';
 import 'package:sams_websitev2/ui_elements/small_nav_menu.dart';
+import 'package:sams_websitev2/ui_elements/tooltip.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'blocs/selected_app_bar_button/selected_app_bar_button_cubit.dart';
@@ -22,21 +23,16 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isTooltipVisible = false;
   final ElTooltipController _elTooltipController = ElTooltipController();
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ScrollOffsetController scrollOffsetController =
-      ScrollOffsetController();
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
-  final ScrollOffsetListener scrollOffsetListener =
-      ScrollOffsetListener.create();
+  final ScrollOffsetController scrollOffsetController = ScrollOffsetController();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ScrollOffsetListener scrollOffsetListener = ScrollOffsetListener.create();
 
   // ignore: unused_element
   void _updatePage(int index) {
     isScrollingProgrammatically = true; // Set the flag to true before scrolling
     itemScrollController
         .scrollTo(
-            index: index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubic)
+            index: index, duration: const Duration(milliseconds: 300), curve: Curves.easeInOutCubic)
         .then((_) {
       // After scrolling is done, reset the flag
       Future.delayed(const Duration(milliseconds: 300)).then((_) {
@@ -79,8 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding:
-                EdgeInsets.fromLTRB(screenWidth / 8, screenHeight / 8, 0, 0),
+            padding: EdgeInsets.fromLTRB(screenWidth / 8, screenHeight / 8, 0, 0),
             child: DelayedAnimation(
               delay: const Duration(milliseconds: 1000),
               child: Text(
@@ -112,8 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             'Hi, I am a ',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize:
-                                    screenWidth > 700 ? screenWidth / 70 : 12,
+                                fontSize: screenWidth > 700 ? screenWidth / 70 : 12,
                                 fontFamily: 'MontBlanc',
                                 fontWeight: FontWeight.w300,
                                 height: 0.9),
@@ -121,19 +115,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           ElTooltip(
                             controller: _elTooltipController,
                             showChildAboveOverlay: false,
-                            appearAnimationDuration:
-                                const Duration(milliseconds: 500),
-                            disappearAnimationDuration:
-                                const Duration(milliseconds: 200),
+                            appearAnimationDuration: const Duration(milliseconds: 500),
+                            disappearAnimationDuration: const Duration(milliseconds: 200),
                             showModal: false,
                             position: screenWidth > 700
                                 ? ElTooltipPosition.bottomCenter
                                 : ElTooltipPosition.bottomEnd,
-                            content: Container(
-                              height: 50,
-                              width: 100,
-                              color: Colors.white,
-                            ),
+                            content: const CodingTooltip(),
                             child: MouseRegion(
                                 onEnter: (event) {
                                   setState(() {
@@ -156,12 +144,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: AnimatedDefaultTextStyle(
                                   style: TextStyle(
                                       color: isHovering
-                                          ? const Color.fromARGB(
-                                              255, 20, 69, 228)
+                                          ? const Color.fromARGB(255, 20, 69, 228)
                                           : Colors.white,
-                                      fontSize: screenWidth > 700
-                                          ? screenWidth / 50
-                                          : 12,
+                                      fontSize: screenWidth > 700 ? screenWidth / 50 : 12,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w600,
                                       height: 0.9),
@@ -173,8 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ' Developer ',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize:
-                                    screenWidth > 700 ? screenWidth / 80 : 12,
+                                fontSize: screenWidth > 700 ? screenWidth / 80 : 12,
                                 fontFamily: 'MontBlanc',
                                 fontWeight: FontWeight.w300,
                                 height: 0.9),
@@ -183,8 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             'based in ',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize:
-                                    screenWidth > 700 ? screenWidth / 80 : 15,
+                                fontSize: screenWidth > 700 ? screenWidth / 80 : 15,
                                 fontFamily: 'MontBlanc',
                                 fontWeight: FontWeight.w300,
                                 height: 0.9),
@@ -193,8 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             'Kansas City',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize:
-                                    screenWidth > 700 ? screenWidth / 70 : 15,
+                                fontSize: screenWidth > 700 ? screenWidth / 70 : 15,
                                 fontFamily: 'MontBlanc',
                                 fontWeight: FontWeight.w600,
                                 height: 0.9),
@@ -211,9 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'Hi, I am a ',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth > 700
-                                        ? screenWidth / 70
-                                        : 12,
+                                    fontSize: screenWidth > 700 ? screenWidth / 70 : 12,
                                     fontFamily: 'MontBlanc',
                                     fontWeight: FontWeight.w300,
                                     height: 0.9),
@@ -232,12 +212,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: AnimatedDefaultTextStyle(
                                     style: TextStyle(
                                         color: isHovering
-                                            ? const Color.fromARGB(
-                                                255, 20, 69, 228)
+                                            ? const Color.fromARGB(255, 20, 69, 228)
                                             : Colors.white,
-                                        fontSize: screenWidth > 700
-                                            ? screenWidth / 50
-                                            : 12,
+                                        fontSize: screenWidth > 700 ? screenWidth / 50 : 12,
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w600,
                                         height: 0.9),
@@ -248,9 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ' Developer ',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth > 700
-                                        ? screenWidth / 80
-                                        : 12,
+                                    fontSize: screenWidth > 700 ? screenWidth / 80 : 12,
                                     fontFamily: 'MontBlanc',
                                     fontWeight: FontWeight.w300,
                                     height: 0.9),
@@ -263,9 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'based in ',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth > 700
-                                        ? screenWidth / 80
-                                        : 15,
+                                    fontSize: screenWidth > 700 ? screenWidth / 80 : 15,
                                     fontFamily: 'MontBlanc',
                                     fontWeight: FontWeight.w300,
                                     height: 0.9),
@@ -274,9 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'Kansas City',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: screenWidth > 700
-                                        ? screenWidth / 70
-                                        : 15,
+                                    fontSize: screenWidth > 700 ? screenWidth / 70 : 15,
                                     fontFamily: 'MontBlanc',
                                     fontWeight: FontWeight.w600,
                                     height: 0.9),
@@ -321,12 +292,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // set state to update the offset
           setState(() {
             _gradientCenter = Alignment(
-              2 * (event.localPosition.dx / MediaQuery.of(context).size.width) -
-                  1,
-              2 *
-                      (event.localPosition.dy /
-                          MediaQuery.of(context).size.height) -
-                  1,
+              2 * (event.localPosition.dx / MediaQuery.of(context).size.width) - 1,
+              2 * (event.localPosition.dy / MediaQuery.of(context).size.height) - 1,
             );
           });
         },
@@ -348,9 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             // SIDE BAR
-            screenWidth > 700
-                ? const SideBar()
-                : smallNavMenu(screenWidth, screenHeight),
+            screenWidth > 700 ? const SideBar() : smallNavMenu(screenWidth, screenHeight),
 
             /* THIS IS THE CONTENT OF THE WEBISTE,
                MAKE SURE ITS SCROLLABLE 
@@ -363,8 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemPositionsListener: itemPositionsListener,
                   scrollOffsetController: scrollOffsetController,
                   scrollOffsetListener: scrollOffsetListener,
-                  itemCount:
-                      homePageWidgetList(screenWidth, screenHeight).length,
+                  itemCount: homePageWidgetList(screenWidth, screenHeight).length,
                   itemBuilder: (context, index) {
                     return homePageWidgetList(screenWidth, screenHeight)[index];
                   }),
