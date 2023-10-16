@@ -1,3 +1,4 @@
+import 'package:el_tooltip/el_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_websitev2/animated_widgets/delayed_animation.dart';
@@ -16,129 +17,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // is hovering
   bool isHovering = false;
-  List<Widget> homePageWidgetList(double screenWidth, double screenHeight) {
-    return [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding:
-                EdgeInsets.fromLTRB(screenWidth / 8, screenHeight / 8, 0, 0),
-            child: DelayedAnimation(
-              delay: const Duration(milliseconds: 1000),
-              child: Text(
-                'Sam\nEspinoza',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth > 700 ? screenWidth / 15 : 30,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w600,
-                    height: 0.9),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: screenHeight > 700 ? 30 : 10,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth / 8, 0, 0, 0),
-            child: DelayedAnimation(
-              delay: const Duration(milliseconds: 1100),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      'Hi, I am a ',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth > 700 ? screenWidth / 70 : 12,
-                          fontFamily: 'MontBlanc',
-                          fontWeight: FontWeight.w300,
-                          height: 0.9),
-                    ),
-                    MouseRegion(
-                        onEnter: (event) {
-                          setState(() {
-                            isHovering = true;
-                          });
-                        },
-                        onExit: (event) {
-                          setState(() {
-                            isHovering = false;
-                          });
-                        },
-                        child: AnimatedDefaultTextStyle(
-                          style: TextStyle(
-                              color: isHovering
-                                  ? const Color.fromARGB(255, 20, 69, 228)
-                                  : Colors.white,
-                              fontSize:
-                                  screenWidth > 700 ? screenWidth / 50 : 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0.9),
-                          duration: const Duration(milliseconds: 200),
-                          child: const Text('Software'),
-                        )),
-                    Text(
-                      ' Developer',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth > 700 ? screenWidth / 80 : 12,
-                          fontFamily: 'MontBlanc',
-                          fontWeight: FontWeight.w300,
-                          height: 0.9),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          // richtext 'based in kansas city'
-          Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth / 8, 0, 0, 0),
-            child: DelayedAnimation(
-              delay: const Duration(milliseconds: 1200),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      'Based in ',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth > 700 ? screenWidth / 80 : 15,
-                          fontFamily: 'MontBlanc',
-                          fontWeight: FontWeight.w300,
-                          height: 0.9),
-                    ),
-                    Text(
-                      'Kansas City',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth > 700 ? screenWidth / 70 : 15,
-                          fontFamily: 'MontBlanc',
-                          fontWeight: FontWeight.w600,
-                          height: 0.9),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ];
-  }
-
   bool isScrollingProgrammatically = false;
+  bool isTooltipVisible = false;
+  final ElTooltipController _elTooltipController = ElTooltipController();
   final ItemScrollController itemScrollController = ItemScrollController();
   final ScrollOffsetController scrollOffsetController =
       ScrollOffsetController();
@@ -147,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final ScrollOffsetListener scrollOffsetListener =
       ScrollOffsetListener.create();
 
+  // ignore: unused_element
   void _updatePage(int index) {
     isScrollingProgrammatically = true; // Set the flag to true before scrolling
     itemScrollController
@@ -173,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context.read<SelectedAppBarButtonCubit>().updateSelectedButton(index);
       }
     });
+
     super.initState();
   }
 
@@ -182,11 +66,240 @@ class _MyHomePageState extends State<MyHomePage> {
     scrollOffsetController;
     itemPositionsListener;
     scrollOffsetListener;
+    _elTooltipController;
     super.dispose();
   }
 
   // screen coordinates variable
   Alignment _gradientCenter = Alignment.center;
+  List<Widget> homePageWidgetList(double screenWidth, double screenHeight) {
+    return [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding:
+                EdgeInsets.fromLTRB(screenWidth / 8, screenHeight / 8, 0, 0),
+            child: DelayedAnimation(
+              delay: const Duration(milliseconds: 1000),
+              child: Text(
+                'Sam\nEspinoza',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth > 700 ? screenWidth / 15 : 40,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    height: 0.9),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: screenHeight > 700 ? 30 : 0,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(screenWidth / 8, 0, 0, 0),
+            child: DelayedAnimation(
+              delay: const Duration(milliseconds: 1100),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth > 700) {
+                      return Row(
+                        children: [
+                          Text(
+                            'Hi, I am a ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    screenWidth > 700 ? screenWidth / 70 : 12,
+                                fontFamily: 'MontBlanc',
+                                fontWeight: FontWeight.w300,
+                                height: 0.9),
+                          ),
+                          ElTooltip(
+                            controller: _elTooltipController,
+                            showChildAboveOverlay: false,
+                            appearAnimationDuration:
+                                const Duration(milliseconds: 500),
+                            disappearAnimationDuration:
+                                const Duration(milliseconds: 200),
+                            showModal: false,
+                            position: screenWidth > 700
+                                ? ElTooltipPosition.bottomCenter
+                                : ElTooltipPosition.bottomEnd,
+                            content: Container(
+                              height: 50,
+                              width: 100,
+                              color: Colors.white,
+                            ),
+                            child: MouseRegion(
+                                onEnter: (event) {
+                                  setState(() {
+                                    isHovering = true;
+                                    if (isHovering && !isTooltipVisible) {
+                                      _elTooltipController.show();
+                                      isTooltipVisible = true;
+                                    }
+                                  });
+                                },
+                                onExit: (event) {
+                                  setState(() {
+                                    isHovering = false;
+                                    if (!isHovering && isTooltipVisible) {
+                                      _elTooltipController.hide();
+                                      isTooltipVisible = false;
+                                    }
+                                  });
+                                },
+                                child: AnimatedDefaultTextStyle(
+                                  style: TextStyle(
+                                      color: isHovering
+                                          ? const Color.fromARGB(
+                                              255, 20, 69, 228)
+                                          : Colors.white,
+                                      fontSize: screenWidth > 700
+                                          ? screenWidth / 50
+                                          : 12,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0.9),
+                                  duration: const Duration(milliseconds: 200),
+                                  child: const Text('Software'),
+                                )),
+                          ),
+                          Text(
+                            ' Developer ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    screenWidth > 700 ? screenWidth / 80 : 12,
+                                fontFamily: 'MontBlanc',
+                                fontWeight: FontWeight.w300,
+                                height: 0.9),
+                          ),
+                          Text(
+                            'based in ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    screenWidth > 700 ? screenWidth / 80 : 15,
+                                fontFamily: 'MontBlanc',
+                                fontWeight: FontWeight.w300,
+                                height: 0.9),
+                          ),
+                          Text(
+                            'Kansas City',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    screenWidth > 700 ? screenWidth / 70 : 15,
+                                fontFamily: 'MontBlanc',
+                                fontWeight: FontWeight.w600,
+                                height: 0.9),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Hi, I am a ',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth > 700
+                                        ? screenWidth / 70
+                                        : 12,
+                                    fontFamily: 'MontBlanc',
+                                    fontWeight: FontWeight.w300,
+                                    height: 0.9),
+                              ),
+                              MouseRegion(
+                                  onEnter: (event) {
+                                    setState(() {
+                                      isHovering = true;
+                                    });
+                                  },
+                                  onExit: (event) {
+                                    setState(() {
+                                      isHovering = false;
+                                    });
+                                  },
+                                  child: AnimatedDefaultTextStyle(
+                                    style: TextStyle(
+                                        color: isHovering
+                                            ? const Color.fromARGB(
+                                                255, 20, 69, 228)
+                                            : Colors.white,
+                                        fontSize: screenWidth > 700
+                                            ? screenWidth / 50
+                                            : 12,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w600,
+                                        height: 0.9),
+                                    duration: const Duration(milliseconds: 200),
+                                    child: const Text('Software'),
+                                  )),
+                              Text(
+                                ' Developer ',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth > 700
+                                        ? screenWidth / 80
+                                        : 12,
+                                    fontFamily: 'MontBlanc',
+                                    fontWeight: FontWeight.w300,
+                                    height: 0.9),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'based in ',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth > 700
+                                        ? screenWidth / 80
+                                        : 15,
+                                    fontFamily: 'MontBlanc',
+                                    fontWeight: FontWeight.w300,
+                                    height: 0.9),
+                              ),
+                              Text(
+                                'Kansas City',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenWidth > 700
+                                        ? screenWidth / 70
+                                        : 15,
+                                    fontFamily: 'MontBlanc',
+                                    fontWeight: FontWeight.w600,
+                                    height: 0.9),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          // richtext 'based in kansas city'
+        ],
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     /*
